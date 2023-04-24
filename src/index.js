@@ -1,3 +1,6 @@
+import Notiflix from 'notiflix';
+
+
 const refs = {
   form: document.querySelector('#search-form'),
   searchQuery: document.querySelector('[name="searchQuery"]'),
@@ -6,23 +9,30 @@ const refs = {
   gallery: document.querySelector('.gallery'),
 };
 
-// console.log(refs.form, refs.searchBtn, refs.searchQuery, refs.loadMoreBtn);
 
 const API_KEY = '13927284-11be6ffea1679f093739cb091';
 refs.form.addEventListener('submit', onSearchSubmit);
 let query = '';
 
 function onSearchSubmit(event) {
-  event.preventDefault();
-  console.log('click');
-
+    event.preventDefault();
+    if (query){
+        console.log('erase previous data');
+        query='';
+        refs.gallery.innerHTML='';
+    }
+    
   query = refs.searchQuery.value;
   console.log(query);
 
   fetch(`https://pixabay.com/api/?key=${API_KEY}&q=${query}&image_type=photo&orientation=horizontal&safesearch=true`)
     .then(responce => responce.json())
     .then(images => {
-        console.log('images.hits', images.hits);
+        if (images.hits.length===0){
+            Notiflix.Notify.warning('Sorry, there are no images matching your search query. Please try again.');
+            refs.form.reset();
+            return;
+        }
         let markdown='';
 
         const imagesArray = images.hits.map(image =>{
@@ -31,9 +41,7 @@ function onSearchSubmit(event) {
 
 
         })
-        // console.log(data.hits[0].webformatURL, data.tags, data.likes);
 
-        console.log(markdown);
         refs.gallery.insertAdjacentHTML('afterbegin', markdown);
 
     })
@@ -43,7 +51,6 @@ function onSearchSubmit(event) {
 
 
 function makeMarkdown (item){
-    console.log('creating markup', item);
     return `<div class="photo-card">
     <img src="${item.webformatURL}" alt="${item.tags}" loading="lazy" />
     <div class="info">
