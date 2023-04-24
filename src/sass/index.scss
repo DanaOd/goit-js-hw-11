@@ -74,18 +74,20 @@ main{
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 
   max-width: 300px;
+  // max-height: 280px;
 
 
 }
 
 .photo-card > img {
+  object-fit: contain;
   max-width: 300px;
-  width: inherit;
-  height: auto;
+
+  height: inherit;
 }
 
 // .gallery > div {
