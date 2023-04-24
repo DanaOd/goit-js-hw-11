@@ -20,16 +20,15 @@ body {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
 }
 
-.feedback-form{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-
+.search-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 }
 
 .submit-btn {
-    height: 2.5rem;
+  height: 2.5rem;
   display: inline-flex;
   align-self: center;
   justify-content: center;
@@ -40,40 +39,53 @@ body {
   box-shadow: rgb(66, 117, 100);
 }
 
-.search{
-    display: inline-block;
-    height: 2.5rem;
+[name='searchQuery'] {
+  display: inline-block;
+  height: 2.5rem;
 
-    padding: 0.4rem 0.75rem;
-    background-color: #fff;
-    border: 1px solid rgb(104, 189, 161);
-
+  padding: 0.4rem 0.75rem;
+  background-color: #fff;
+  border: 1px solid rgb(104, 189, 161);
 }
 
 // -------- Gallery-------
 
-.container{
-    display: grid;
-    grid-auto-flow: row;
-    grid-auto-columns: 300px;
-    gap: 2.5rem;
+.gallery {
+  display: grid;
+  grid-auto-flow: row;
+  grid-auto-columns: 300px;
+  gap: 2.5rem;
 }
 
-.card{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
+.card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 
-.card-image{
-    width: 300px;
-    height: auto;
+.card-image {
+  width: 300px;
+  height: auto;
 }
 
 .grid-container > div {
-    background-color: rgba(255, 255, 255, 0.8);
-    text-align: center;
-    padding: 20px 0;
-    font-size: 30px;
-  }
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  padding: 20px 0;
+  font-size: 30px;
+}
+
+.load-more {
+  display: block;
+  visibility: hidden;
+  height: 2.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 3rem;
+
+  padding: 0.4rem 0.75rem;
+
+  background-color: #fff;
+  border: 1px solid rgb(104, 189, 161);
+}

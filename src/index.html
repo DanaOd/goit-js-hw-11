@@ -14,43 +14,25 @@
 
   <body>
     <header class="header">
-      <form class="feedback-form">
+      <form class="search-form" id="search-form">
         <input
           type="text"
-          class="search"
-          id="search"
+          name="searchQuery"
+          autocomplete="off"
           placeholder="Search images..."
         />
         <button type="submit" class="submit-btn">
           <span class="material-symbols-outlined">search</span>
-        </button>
+        </button>      
+      </form>
+
       </form>
     </header>
-    <main class="container">
-      <!-- <div class="card">
-        <img src="" alt="" class = "card-image"/>
-        <div class="description">
-          <div class="descr-item">
-            <p class="title">Likes</p>
-            <p class="likes-output"></p>
-          </div>
-
-          <div class="descr-item">
-            <p class="title">Views</p>
-            <p class="views-output"></p>
-          </div>
-
-          <div class="descr-item">
-            <p class="title">Comments</p>
-            <p class="comments-output"></p>
-          </div>
-
-          <div class="descr-item">
-            <p class="title">Downloads</p>
-            <p class="downloads-output"></p>
-          </div>
-        </div>
-      </div> -->
+    <main>
+      <div class="gallery">
+        <!-- Карточки изображений -->
+      </div>
+      <button type="button" class="load-more">Load more</button>
     </main>
     <!-- ❗️❗️❗️ Add partials like so for every page -->
     <!-- <include src="./partials/example.html"></include> -->
