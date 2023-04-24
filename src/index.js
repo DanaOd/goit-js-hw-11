@@ -3,6 +3,7 @@ const refs = {
   searchQuery: document.querySelector('[name="searchQuery"]'),
   searchBtn: document.querySelector('.submit-btn'),
   loadMoreBtn: document.querySelector('.load-more'),
+  gallery: document.querySelector('.gallery'),
 };
 
 // console.log(refs.form, refs.searchBtn, refs.searchQuery, refs.loadMoreBtn);
@@ -20,52 +21,47 @@ function onSearchSubmit(event) {
 
   fetch(`https://pixabay.com/api/?key=${API_KEY}&q=${query}&image_type=photo&orientation=horizontal&safesearch=true`)
     .then(responce => responce.json())
-    .then(data => {
-        console.log('data', data);
-        console.log('data.hits[0]', data.hits[0]);
+    .then(images => {
+        console.log('images.hits', images.hits);
+        let markdown='';
+
+        const imagesArray = images.hits.map(image =>{
+            const imageMarkDown = makeMarkdown(image);
+            markdown +=imageMarkDown;
 
 
-        console.log(data.hits[0].webformatURL, data.tags, data.likes);
+        })
+        // console.log(data.hits[0].webformatURL, data.tags, data.likes);
 
+        console.log(markdown);
+        refs.gallery.insertAdjacentHTML('afterbegin', markdown);
 
     })
     .catch(error => console.log(error));
 }
 
-let templateMarkDown = `<div class="photo-card">
-  <img src="" alt="" loading="lazy" />
-  <div class="info">
-    <p class="info-item">
-      <b>Likes</b>
-    </p>
-    <p class="info-item">
-      <b>Views</b>
-    </p>
-    <p class="info-item">
-      <b>Comments</b>
-    </p>
-    <p class="info-item">
-      <b>Downloads</b>
-    </p>
-  </div>
-</div>`;
 
 
-function makeMarkdown (data){
+function makeMarkdown (item){
+    console.log('creating markup', item);
     return `<div class="photo-card">
-    <img src="${data.webformatURL}" alt="${data.tags}" loading="lazy" />
+    <img src="${item.webformatURL}" alt="${item.tags}" loading="lazy" />
     <div class="info">
       <p class="info-item">
-        <b>Likes</b>${data.likes}
+        <b>Likes</b> 
+         ${item.likes}
       </p>
       <p class="info-item">
-        <b>Views</b>
+        <b>Views</b> 
+         ${item.views}
       </p>
       <p class="info-item">
         <b>Comments</b>
+         ${item.comments}
       </p>
       <p class="info-item">
-        <b>Downloads</b>
+        <b>Downloads</b> 
+         ${item.downloads}
       </p>
     </div>
   </div>`;
