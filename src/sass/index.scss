@@ -3,6 +3,8 @@
 
 body {
   font-family: Arial, Helvetica, sans-serif;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .header {
@@ -47,3 +49,31 @@ body {
     border: 1px solid rgb(104, 189, 161);
 
 }
+
+// -------- Gallery-------
+
+.container{
+    display: grid;
+    grid-auto-flow: row;
+    grid-auto-columns: 300px;
+    gap: 2.5rem;
+}
+
+.card{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-image{
+    width: 300px;
+    height: auto;
+}
+
+.grid-container > div {
+    background-color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    padding: 20px 0;
+    font-size: 30px;
+  }
