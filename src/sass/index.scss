@@ -1,2 +1,49 @@
 @import './common';
 @import './example';
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.header {
+  min-height: 6rem;
+  background-color: rgb(194, 255, 235);
+  display: flex;
+  justify-content: center;
+
+  position: sticky;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+}
+
+.feedback-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+}
+
+.submit-btn {
+    height: 2.5rem;
+  display: inline-flex;
+  align-self: center;
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgb(128, 215, 186);
+  border: 1px solid rgb(104, 189, 161);
+  box-shadow: rgb(66, 117, 100);
+}
+
+.search{
+    display: inline-block;
+    height: 2.5rem;
+
+    padding: 0.4rem 0.75rem;
+    background-color: #fff;
+    border: 1px solid rgb(104, 189, 161);
+
+}
