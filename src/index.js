@@ -61,13 +61,14 @@ async function fetchItems(url) {
   const images = responce.data;
 
   if (images.hits.length === 0) {
+    Notiflix.Notify.warning(
+        'Sorry, there are no images matching your search query. Please try again.'
+      );
     refs.form.reset();
     refs.loadMoreBtn.style.visibility = 'hidden';
     refs.gallery.innerHTML = '';
     markdown = '';
-    Notiflix.Notify.warning(
-      'Sorry, there are no images matching your search query. Please try again.'
-    );
+
     return;
   }
 
