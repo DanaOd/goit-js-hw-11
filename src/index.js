@@ -1,7 +1,7 @@
 import Notiflix from 'notiflix';
 import axios from 'axios';
-
-// const axios = require('axios');
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const refs = {
   form: document.querySelector('#search-form'),
@@ -15,12 +15,15 @@ const API_KEY = '13927284-11be6ffea1679f093739cb091';
 refs.form.addEventListener('submit', onSearchSubmit);
 let query = '';
 let page = 1;
-let per_page = 20;
+let per_page = 40;
 let totalPages = 0;
+let isNewQuery = false;
 
 refs.loadMoreBtn.addEventListener('click', onLoadMore);
 
 function onSearchSubmit(event) {
+  isNewQuery = false;
+
   event.preventDefault();
   if (refs.searchQuery.value === '') {
     console.log('no search request');
@@ -29,8 +32,12 @@ function onSearchSubmit(event) {
     return;
   }
 
+  if (query === refs.searchQuery.value) {
+    return;
+  }
+
   if (query !== refs.searchQuery.value) {
-    console.log('set up new query value');
+    isNewQuery = true;
     refs.gallery.innerHTML = '';
     query = refs.searchQuery.value;
   }
@@ -52,18 +59,25 @@ function onSearchSubmit(event) {
 async function fetchItems(url) {
   const responce = await axios.get(url);
   const images = responce.data;
-  console.log(images);
 
   if (images.hits.length === 0) {
+    refs.form.reset();
+    refs.loadMoreBtn.style.visibility = 'hidden';
+    refs.gallery.innerHTML = '';
+    markdown = '';
     Notiflix.Notify.warning(
       'Sorry, there are no images matching your search query. Please try again.'
     );
-    refs.form.reset();
     return;
   }
+
+  // проверка на то, что это новый запрос, и выводить сообщение с кол-вом найденных картинок
+  if (isNewQuery) {
+    Notiflix.Notify.success(`"Hooray! We found ${images.totalHits} images."`);
+  }
+
   //сколько страниц приходит
   totalPages = Math.ceil(images.totalHits / per_page);
-  console.log('totalPages', images.totalHits, totalPages);
 
   //показывать ли load more 1й раз
   if (totalPages > 1 && page === 1) {
@@ -79,39 +93,16 @@ async function fetchItems(url) {
   return markdown;
 }
 
-// return fetch(url)
-//     .then(responce => responce.json())
-//     .then(images => {
-//         if (images.hits.length === 0) {
-//             Notiflix.Notify.warning(
-//                 'Sorry, there are no images matching your search query. Please try again.'
-//             );
-//             refs.form.reset();
-//             return;
-//         }
+// let gallery = new SimpleLightbox('.gallery div a');
+// gallery.on('show.simplelightbox', function () {
+//   console.log('gallery on');
+// });
 
-//         //сколько страниц приходит
-//         totalPages = Math.ceil(images.totalHits / per_page);
-//         console.log('totalPages', images.totalHits, totalPages);
-
-//         //показывать ли load more 1й раз
-//         if (totalPages > 1 && page === 1) {
-//             refs.loadMoreBtn.style.visibility = 'visible';
-//         }
-
-//         let markdown = '';
-
-//         images.hits.map(image => {
-//             const imageMarkDown = makeMarkdown(image);
-//             markdown += imageMarkDown;
-//         });
-//         return markdown;
-//     });
-// }
+//  <a href="${item.webformatURL}"><img src="${item.largeImageURL}" alt="${item.tags}" loading="lazy" /></a>
 
 function makeMarkdown(item) {
   return `<div class="photo-card">
-    <img src="${item.webformatURL}" alt="${item.tags}" loading="lazy" />
+  <img src="${item.webformatURL}" alt="${item.tags}" loading="lazy" />
     <div class="info">
       <p class="info-item">
         <b>Likes</b> 
@@ -133,18 +124,37 @@ function makeMarkdown(item) {
   </div>`;
 }
 
+// SIMPLEBOX MODAL OPEN BY CLICK
+// gallery.addEventListener('click', onImageClick);
+
+function onImageClick(event) {
+  if (event.target.nodeName !== 'IMG') {
+    return;
+  }
+  gallery.open(event.target);
+}
+
 function onLoadMore(event) {
+  isNewQuery = false;
   refs.loadMoreBtn.style.visibility = 'hidden';
   page += 1;
   let URL = `https://pixabay.com/api/?key=${API_KEY}&q=${query}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${per_page}`;
-
-  console.log('click on load more, page: ', page);
 
   fetchItems(URL)
     .then(markdown => {
       refs.gallery.insertAdjacentHTML('beforeend', markdown);
     })
     .catch(error => console.log(error));
+
+  // Плавная прокрутка
+  const { height: cardHeight } = document
+    .querySelector('.gallery')
+    .firstElementChild.getBoundingClientRect();
+
+  window.scrollBy({
+    top: cardHeight * 2,
+    behavior: 'smooth',
+  });
 
   // показывать ли load more
   if (page == totalPages) {
